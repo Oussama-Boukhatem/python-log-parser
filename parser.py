@@ -1,0 +1,32 @@
+import re
+
+def parse_log_file(file_path):
+    log_events = []
+
+    with open(file_path, "r") as f:
+        for line in f:
+
+            timestamp = line[:15]
+
+            event_match = re.search(r"(Failed password|Accepted password)", line)
+            event = event_match.group(1) if event_match else "Unknown"
+
+            user_match = re.search(r"for (?:invalid user )?(\w+)", line)
+            user = user_match.group(1) if user_match else "Unknown"
+
+            ip_match = re.search(r"from (\d+\. \d+\. \d+\. \d+\.)", line)
+            ip = ip_match.group(1) if ip_match else "Unknown"
+
+            log_events.append({
+                "timestamp": timestamp,
+                "ip": ip,
+                "event": event,
+                "user": user
+            })
+
+        return log_events
+
+if __name__ == "__main__":
+    logs = parse_log_file("logs/sample_auth.log")
+    for entry in logs:
+        print(entry)
