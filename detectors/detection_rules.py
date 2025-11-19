@@ -10,7 +10,7 @@ def detect_brute_force(log_events, threshold = 5):
     for ip, count in failed_counts.items():
         if count > threshold:
             alerts.append(f"[ALERT] Possible brute-force attack from {ip} ({count} failed attempts)")
-        return alerts
+    return alerts
     
 def detect_multiple_invalid_users(log_events, threshold = 3):
     ip_users = defaultdict(set)
